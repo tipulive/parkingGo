@@ -1,0 +1,26 @@
+@baseUrl = http://localhost:8080/api
+@email=company@gmail.com
+@PhoneNumber=+250782389359
+@password=1
+@Auth_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbiI6eyJpZCI6MiwidWlkIjoia2ViaW5lZXJpY011bmFfMTY2ODkzNTUyNSIsImNhcmR1aWQiOiIiLCJ1aWRDcmVhdG9yIjoiIiwic3Vic2NyaWJlciI6IiIsInBob3RvX3VybCI6IiIsIndlaWdodCI6MCwibmFtZSI6ImtlemEiLCJlbWFpbCI6ImNvbXBhbnlAZ21haWwuY29tIiwicGFzc3dvcmQiOiIiLCJDY29kZSI6IiIsInBob25lIjoiIiwiUGhvbmVOdW1iZXIiOiIrMjUwNzgyMzg5MzU5IiwicGxhdGZvcm0iOiIiLCJzdGF0dXMiOiIiLCJnZW5kZXIiOiIiLCJhZ2UiOiIiLCJpbml0Q291bnRyeSI6IiIsImNvdW50cnkiOiIiLCJtYXJpdGFsX3N0YXR1cyI6IiIsImNyZWF0ZWRfYXQiOiIyMDIyLTExLTIwVDExOjEyOjA1KzAyOjAwIiwicGFja1VpZCI6IiIsInBhY2tUeXBlIjoiIiwic3RhdHVzVmFsaWQiOiIifSwiZXhwIjoxNzU0NzgyOTczfQ.xZxS0URv2VPdFtfO-CVtRI6p6GeECxim4KiHtdDar58
+POST  {{baseUrl}}/AdminLogin
+content-type: application/json;charset=UTF-8
+Authorization: Bearer {{Auth_token}}
+
+{
+"username":"test",
+"password":"keza"
+}
+
+### Try to access Proteted middleware
+POST  {{baseUrl}}/AdminProtected
+content-type: application/json;charset=UTF-8
+Authorization: Bearer {{Auth_token}}
+
+{
+"username":"admin",
+"password":"1234"
+
+
+
+}

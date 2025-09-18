@@ -1,0 +1,101 @@
+@baseUrl = http://localhost:8080/api
+@email=company@gmail.com
+@PhoneNumber=+250782389359
+@password=1
+@Auth_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbiI6eyJpZCI6MiwidWlkIjoia2ViaW5lZXJpY011bmFfMTY2ODkzNTUyNSIsImNhcmR1aWQiOiIiLCJ1aWRDcmVhdG9yIjoiIiwic3Vic2NyaWJlciI6IiIsInBob3RvX3VybCI6IiIsIndlaWdodCI6MCwibmFtZSI6ImtlemEiLCJlbWFpbCI6ImNvbXBhbnlAZ21haWwuY29tIiwicGFzc3dvcmQiOiIiLCJDY29kZSI6IiIsInBob25lIjoiIiwiUGhvbmVOdW1iZXIiOiIrMjUwNzgyMzg5MzU5IiwicGxhdGZvcm0iOiIiLCJzdGF0dXMiOiIiLCJnZW5kZXIiOiIiLCJhZ2UiOiIiLCJpbml0Q291bnRyeSI6IiIsImNvdW50cnkiOiIiLCJtYXJpdGFsX3N0YXR1cyI6IiIsImNyZWF0ZWRfYXQiOiIyMDIyLTExLTIwVDExOjEyOjA1KzAyOjAwIiwicGFja1VpZCI6IiIsInBhY2tUeXBlIjoiIiwic3RhdHVzVmFsaWQiOiIifSwiZXhwIjoxNzU0NzgzNDE5fQ.Lnkgo2dpX37Eq9tZFBCIwDgxpPXICIGNRR8CYZNVT48
+POST  {{baseUrl}}/login
+content-type: application/json;charset=UTF-8
+Authorization: Bearer {{Auth_token}}
+
+{
+"username":"test",
+"password":"theo"
+}
+### Try to access Proteted middleware
+POST  {{baseUrl}}/protected
+content-type: application/json;charset=UTF-8
+Authorization: Bearer {{Auth_token}}
+
+{
+"username":"admin",
+"password":"1234"
+
+
+
+}
+### Try to access Proteted middleware
+POST  {{baseUrl}}/protectData
+content-type: application/json;charset=UTF-8
+Authorization: Bearer {{Auth_token}}
+
+{
+"username":"admin",
+"password":"123"
+
+
+
+}
+### Etags Caching
+GET  {{baseUrl}}/GetTags
+content-type: application/json;charset=UTF-8
+Authorization: Bearer {{Auth_token}}
+If-None-Match: "d8e8fca2dc0f896fd7cb49"
+
+{
+"inputAction":"pepe"
+
+
+
+}
+
+### GET Users
+GET  {{baseUrl}}/GetUsers
+content-type: application/json;charset=UTF-8
+Authorization: Bearer {{Auth_token}}
+
+{
+"inputAction":"pepe"
+
+
+
+}
+
+### Create Users
+POST  {{baseUrl}}/CreateUser
+content-type: application/json;charset=UTF-8
+Authorization: Bearer {{Auth_token}}
+
+{
+"name":"keke",
+"email":"vigo@gmail.com"
+
+
+
+
+}
+
+
+
+
+### Package ,GET
+GET  {{baseUrl}}/items
+content-type: application/json;charset=UTF-8
+Authorization: Bearer {{Auth_token}}
+
+{
+"inputAction":"pepe"
+
+
+
+}
+### Package ,POST
+POST  {{baseUrl}}/Create
+content-type: application/json;charset=UTF-8
+Authorization: Bearer {{Auth_token}}
+
+{
+"inputAction":"viewallpackage"
+
+
+
+}
