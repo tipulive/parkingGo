@@ -1,0 +1,5 @@
+to load .env you need to do this once in config file 
+
+-to use .env you need to do that in main.go 
+
+test := os.Getenv("DB_USER")

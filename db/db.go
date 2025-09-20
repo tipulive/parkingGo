@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"os"
 
 	"parking/config" // replace with your actual module path
 
@@ -18,7 +19,7 @@ var DB *sql.DB
 func InitDB(cfg config.MySQLConfig) {
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=Local",
 		cfg.User, cfg.Password, cfg.Host, cfg.Port, cfg.DBName)
-
+	test := os.Getenv("DB_USER")
 	var err error
 	DB, err = sql.Open("mysql", dsn)
 	//DB, err = sqlx.Connect("mysql", dsn)
@@ -30,5 +31,5 @@ func InitDB(cfg config.MySQLConfig) {
 		log.Fatalf("Error connecting to DB: %v", err)
 	}
 
-	fmt.Println("Database connected!")
+	fmt.Println("Database connected!%v", test)
 }

@@ -7,6 +7,8 @@ require (
 	github.com/spf13/viper v1.20.1
 )
 
+require github.com/joho/godotenv v1.5.1 // indirect
+
 require (
 	filippo.io/edwards25519 v1.1.0 // indirect
 	github.com/fsnotify/fsnotify v1.9.0 // indirect
