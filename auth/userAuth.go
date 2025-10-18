@@ -106,15 +106,18 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 // middreware
-func AuthMiddleware(next http.HandlerFunc) http.HandlerFunc { //User Authentication
-	return func(w http.ResponseWriter, r *http.Request) {
+// AuthMiddleware verifies JWT and saves claims in context
+func AuthMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		authHeader := r.Header.Get("Authorization")
 		if authHeader == "" {
-			http.Error(w, "Missing auth header", http.StatusUnauthorized)
+			http.Error(w, "Missing Authorization header", http.StatusUnauthorized)
 			return
 		}
 
+		// Remove "Bearer " prefix
 		tokenStr := strings.TrimPrefix(authHeader, "Bearer ")
+
 		claims := &Claims{}
 
 		token, err := jwt.ParseWithClaims(tokenStr, claims, func(token *jwt.Token) (interface{}, error) {
@@ -125,11 +128,11 @@ func AuthMiddleware(next http.HandlerFunc) http.HandlerFunc { //User Authenticat
 			http.Error(w, "Invalid or expired token", http.StatusUnauthorized)
 			return
 		}
-		// Save claims in context
+
+		// Store claims in context
 		ctx := context.WithValue(r.Context(), "user", claims)
 		next.ServeHTTP(w, r.WithContext(ctx))
-		//next.ServeHTTP(w, r)
-	}
+	})
 }
 func ProtectedHandler(w http.ResponseWriter, r *http.Request) {
 	auth := r.Context().Value("user").(*Claims)

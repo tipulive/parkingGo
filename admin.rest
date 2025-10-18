@@ -1,8 +1,8 @@
-@baseUrl = http://localhost:8080/api
+@baseUrl = http://localhost:8080/api/v1
 @email=company@gmail.com
 @PhoneNumber=+250782389359
 @password=1
-@Auth_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbiI6eyJpZCI6MiwidWlkIjoia2ViaW5lZXJpY011bmFfMTY2ODkzNTUyNSIsImNhcmR1aWQiOiIiLCJ1aWRDcmVhdG9yIjoiIiwic3Vic2NyaWJlciI6IiIsInBob3RvX3VybCI6IiIsIndlaWdodCI6MCwibmFtZSI6ImtlemEiLCJlbWFpbCI6ImNvbXBhbnlAZ21haWwuY29tIiwicGFzc3dvcmQiOiIiLCJDY29kZSI6IiIsInBob25lIjoiIiwiUGhvbmVOdW1iZXIiOiIrMjUwNzgyMzg5MzU5IiwicGxhdGZvcm0iOiIiLCJzdGF0dXMiOiIiLCJnZW5kZXIiOiIiLCJhZ2UiOiIiLCJpbml0Q291bnRyeSI6IiIsImNvdW50cnkiOiIiLCJtYXJpdGFsX3N0YXR1cyI6IiIsImNyZWF0ZWRfYXQiOiIyMDIyLTExLTIwVDExOjEyOjA1KzAyOjAwIiwicGFja1VpZCI6IiIsInBhY2tUeXBlIjoiIiwic3RhdHVzVmFsaWQiOiIifSwiZXhwIjoxNzU0NzgyOTczfQ.xZxS0URv2VPdFtfO-CVtRI6p6GeECxim4KiHtdDar58
+@Auth_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbiI6eyJpZCI6MiwidWlkIjoia2ViaW5lZXJpY011bmFfMTY2ODkzNTUyNSIsImNhcmR1aWQiOiIiLCJ1aWRDcmVhdG9yIjoiIiwic3Vic2NyaWJlciI6IlRFQUxURCIsInBob3RvX3VybCI6IiIsIndlaWdodCI6MCwibmFtZSI6ImtlemEiLCJlbWFpbCI6ImNvbXBhbnlAZ21haWwuY29tIiwicGFzc3dvcmQiOiIiLCJDY29kZSI6IiIsInBob25lIjoiIiwiUGhvbmVOdW1iZXIiOiIrMjUwNzgyMzg5MzU5IiwicGxhdGZvcm0iOiIiLCJzdGF0dXMiOiIiLCJnZW5kZXIiOiIiLCJhZ2UiOiIiLCJpbml0Q291bnRyeSI6IiIsImNvdW50cnkiOiIiLCJtYXJpdGFsX3N0YXR1cyI6IiIsImNyZWF0ZWRfYXQiOiIyMDIyLTExLTIwVDAxOjEyOjA1LTA4OjAwIiwicGFja1VpZCI6IiIsInBhY2tUeXBlIjoiIiwic3RhdHVzVmFsaWQiOiIifSwiZXhwIjoxNzYwODExODEyfQ.j4tiq592qJFdyvR7Fszpst2voXYuU4gtzYvpe-MiCXw
 POST  {{baseUrl}}/AdminLogin
 content-type: application/json;charset=UTF-8
 Authorization: Bearer {{Auth_token}}
@@ -21,6 +21,37 @@ Authorization: Bearer {{Auth_token}}
 "username":"admin",
 "password":"1234"
 
+}
+###create Package
+POST {{baseUrl}}/package/add
+content-type: application/json;charset=UTF-8
+Authorization: Bearer {{Auth_token}}
+
+{
+ "name": "kevine",
+  "packValid": "30",
+  "packCover": 2,
+  "status": "active",
+  "packEligible": "1",
+  "packType": "Mandatory",
+  "packDetail": "Access to premium parking spots",
+  "price": "100",
+  "commentData": "First batch",
+  "created_at": "2025-10-15T10:00:00Z"
+
+
+}
+### parking
+GET {{baseUrl}}/payment/
+content-type: application/json;charset=UTF-8
+Authorization: Bearer {{Auth_token}}
+
+{
+  "uid": "sub_001",
+  "uid_user": "user_001",
+  "pack_uid": "platinums_20251016131529_5641",
+  "user_status": "on",
+  "paid_status": "paid"
 
 
 }

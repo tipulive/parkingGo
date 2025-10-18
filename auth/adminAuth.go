@@ -4,7 +4,11 @@ import (
 	"context"
 	"encoding/json"
 	"net/http"
+
 	"parking/dbQuery"
+	"parking/helper"
+
+	"fmt"
 	"parking/model"
 	"strings"
 	"time"
@@ -29,6 +33,7 @@ type AdminUserData struct {
 }
 
 // Fake user check
+var response = helper.GetResponse
 
 func AdminLoginHandler(w http.ResponseWriter, r *http.Request) {
 	var creds Credentials
@@ -37,11 +42,14 @@ func AdminLoginHandler(w http.ResponseWriter, r *http.Request) {
 	success, result := dbQuery.AdminLogin(admin)
 
 	if !success {
-		http.Error(w, "Invalid credentials", http.StatusUnauthorized)
+		//http.Error(w, "Invalid credentials", http.StatusUnauthorized)
+		message := fmt.Sprintf("Invalid credentials", http.StatusUnauthorized)
+
+		json.NewEncoder(w).Encode(response(false, message))
 		return
 	}
-
-	expirationTime := time.Now().Add(5 * time.Minute) //minute to be expired
+	//500 means 500 minutes
+	expirationTime := time.Now().Add(500 * time.Minute) //minute to be expired
 
 	claims := &AdminClaims{
 
@@ -61,8 +69,37 @@ func AdminLoginHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(map[string]string{"token": tokenStr})
 }
 
+// AdminAuthMiddleware for Chi
+func AdminAuthMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		authHeader := r.Header.Get("Authorization")
+		if authHeader == "" {
+			http.Error(w, "Missing auth header", http.StatusUnauthorized)
+			return
+		}
+
+		tokenStr := strings.TrimPrefix(authHeader, "Bearer ")
+		adminCla := &AdminClaims{}
+
+		token, err := jwt.ParseWithClaims(tokenStr, adminCla, func(token *jwt.Token) (interface{}, error) {
+			return AdminJwtKey, nil
+		})
+
+		if err != nil || !token.Valid {
+			message := "Invalid credentials"
+			w.WriteHeader(http.StatusUnauthorized)
+			json.NewEncoder(w).Encode(response(false, message))
+			return
+		}
+
+		// Save claims in context
+		ctx := context.WithValue(r.Context(), "admin", adminCla)
+		next.ServeHTTP(w, r.WithContext(ctx))
+	})
+}
+
 // middreware
-func AdminAuthMiddleware(next http.HandlerFunc) http.HandlerFunc { //User Authentication
+/*func AdminAuthMiddleware(next http.HandlerFunc) http.HandlerFunc { //User Authentication
 	return func(w http.ResponseWriter, r *http.Request) {
 		authHeader := r.Header.Get("Authorization")
 		if authHeader == "" {
@@ -78,7 +115,10 @@ func AdminAuthMiddleware(next http.HandlerFunc) http.HandlerFunc { //User Authen
 		})
 
 		if err != nil || !token.Valid {
-			http.Error(w, "Invalid or expired token", http.StatusUnauthorized)
+			//http.Error(w, "Invalid or expired token", http.StatusUnauthorized)
+			message := fmt.Sprintf("Invalid credentials", http.StatusUnauthorized)
+
+			json.NewEncoder(w).Encode(response(false, message))
 			return
 		}
 		// Save claims in context
@@ -86,4 +126,4 @@ func AdminAuthMiddleware(next http.HandlerFunc) http.HandlerFunc { //User Authen
 		next.ServeHTTP(w, r.WithContext(ctx))
 		//next.ServeHTTP(w, r)
 	}
-}
+}*/
