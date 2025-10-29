@@ -9,10 +9,10 @@ import (
 	"github.com/go-playground/validator/v10"
 )
 
-var packageData model.Package
-var packages []model.Package
-var paymentData model.Subscription
-var Subscription []model.Subscription
+var packageData model.Package         //form
+var packages []model.Package          //table
+var paymentData model.Subscription    //form
+var Subscription []model.Subscription //table
 var adminData model.Admin
 var userData model.User
 
@@ -27,11 +27,11 @@ type RequestContext struct {
 }
 
 func AuthAdmin(r *http.Request) *auth.AdminClaims {
-	r.Context().Value("admin").(*auth.AdminClaims).Admin.Password = "no password"
+	r.Context().Value(auth.AdminClaimsKey).(*auth.AdminClaims).Admin.Password = "no password"
 
-	return r.Context().Value("admin").(*auth.AdminClaims)
+	return r.Context().Value(auth.AdminClaimsKey).(*auth.AdminClaims)
 }
 func AuthUser(r *http.Request) *auth.Claims {
-	r.Context().Value("user").(*auth.Claims).User.Password = "no password"
-	return r.Context().Value("user").(*auth.Claims)
+	r.Context().Value(auth.UserClaimsKey).(*auth.Claims).User.Password = "no password"
+	return r.Context().Value(auth.UserClaimsKey).(*auth.Claims)
 }

@@ -1,0 +1,6 @@
+brew search redis 
+
+then brew install redis 
+
+then install GUI 
+brew install redis-insight

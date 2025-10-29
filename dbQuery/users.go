@@ -62,33 +62,48 @@ func CreateUser(user model.User) error {
 	return err
 }
 func AdminLogin(admin model.Admin) (bool, []model.Admin) {
-
-	//_, err := db.DB.Query("select *from users where email=? and name=?", user.Email, user.Name)
-	// Clean input
-
-	rows, err := db.DB.Query("SELECT id,uid,subscriber, name, email,PhoneNumber,created_at FROM admins WHERE name=?", admin.Name)
+	var admins []model.Admin
+	err := db.DB.Select(&admins, "SELECT * FROM admins WHERE name=? ", admin.Name)
 
 	if err != nil {
+		// This means actual DB error (connection, query issue, etc.)
 
 		return false, nil
 	}
-	defer rows.Close()
-
-	var admins []model.Admin
-	for rows.Next() {
-		var u model.Admin
-		//if err := rows.Scan(&u.ID, &u.Name, &u.Email); err != nil {
-		if err := rows.Scan(&u.ID, &u.UID, &u.Subscriber, &u.Name, &u.Email, &u.PhoneNumber, &u.CreatedAt); err != nil {
-			log.Println("Scan error:", err)
-			continue
-		}
-		admins = append(admins, u)
-	}
-	if len(admins) < 1 {
-		return false, admins
-	}
 	return true, admins
+
 }
+
+/*
+func AdminLogin(admin model.Admin) (bool, []model.Admin) {
+
+		//_, err := db.DB.Query("select *from users where email=? and name=?", user.Email, user.Name)
+		// Clean input
+
+		rows, err := db.DB.Query("SELECT id,uid,subscriber, name, email,PhoneNumber,created_at FROM admins WHERE name=?", admin.Name)
+
+		if err != nil {
+
+			return false, nil
+		}
+		defer rows.Close()
+
+		var admins []model.Admin
+		for rows.Next() {
+			var u model.Admin
+			//if err := rows.Scan(&u.ID, &u.Name, &u.Email); err != nil {
+			if err := rows.Scan(&u.ID, &u.UID, &u.Subscriber, &u.Name, &u.Email, &u.PhoneNumber, &u.CreatedAt); err != nil {
+				log.Println("Scan error:", err)
+				continue
+			}
+			admins = append(admins, u)
+		}
+		if len(admins) < 1 {
+			return false, admins
+		}
+		return true, admins
+	}
+*/
 func UserLogin(user model.User) (bool, []model.User) {
 
 	//_, err := db.DB.Query("select *from users where email=? and name=?", user.Email, user.Name)

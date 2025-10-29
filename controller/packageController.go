@@ -15,6 +15,14 @@ import (
 
 func Package(w http.ResponseWriter, r *http.Request) {
 
+	err := db.DB.Select(&packages, "Select *from packages ")
+
+	if err != nil {
+		// This means actual DB error (connection, query issue, etc.)
+		json.NewEncoder(w).Encode(response(false, err.Error()))
+		return
+	}
+	json.NewEncoder(w).Encode(response(true, packages))
 }
 func AddPackage(w http.ResponseWriter, r *http.Request) {
 	// Decode JSON body

@@ -6,10 +6,21 @@ import (
 	"os"
 	"regexp"
 	"time"
+
+	"path/filepath"
+	"runtime"
+	"strings"
+	"sync"
 )
 
 // default location
 var loc *time.Location
+
+// cache to avoid recomputing for the same file
+var (
+	fileNameCache = make(map[string]string)
+	mu            sync.RWMutex
+)
 
 func init() { //to make sure that it will be initialized
 	var err error
@@ -30,6 +41,11 @@ type Response struct {
 	Response interface{} `json:"result"`
 }
 
+type Permission struct {
+	Permission string `json:"permission"`
+	Status     bool
+}
+
 // GetCurrentTime returns the current time in Africa/Kigali in YYYY-MM-DD HH:MM:SS
 func GetCurrentTime() string {
 	return time.Now().In(loc).Format("2006-01-02 15:04:05")
@@ -40,6 +56,13 @@ func GetResponse(statusPar bool, responsePar interface{}) Response {
 	return Response{
 		Status:   statusPar,
 		Response: responsePar,
+	}
+}
+func AdminPermission(access string, status bool) Permission {
+
+	return Permission{
+		Permission: access,
+		Status:     status,
 	}
 }
 
@@ -62,6 +85,7 @@ func CleanString(input string) string {
 	cleaned := re.ReplaceAllString(input, "")
 	return cleaned
 }
+
 func GenerateInfos(userName string) UtilInfo {
 	timestamp := time.Now().In(loc).Format("2006-01-02 15:04:05") //this is how go managed format
 
@@ -77,4 +101,26 @@ func GenerateInfos(userName string) UtilInfo {
 		ID:        id,
 		CreatedAt: timestamp,
 	}
+}
+
+// GetFileName returns the base name of the caller file (without extension).
+// Example: "power.go" → "power"
+func GetFileName() string {
+	_, file, _, _ := runtime.Caller(1)
+
+	mu.RLock()
+	name, ok := fileNameCache[file]
+	mu.RUnlock()
+	if ok {
+		return name
+	}
+
+	base := filepath.Base(file)
+	name = strings.TrimSuffix(base, filepath.Ext(base))
+
+	mu.Lock()
+	fileNameCache[file] = name
+	mu.Unlock()
+
+	return name
 }

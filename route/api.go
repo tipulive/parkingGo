@@ -163,7 +163,15 @@ func ApiRoute() {
 			r.Use(auth.AdminAuthMiddleware)
 
 			r.Post("/AdminProtected", controller.AdminProtected)
+			r.Get("/Permission", controller.AddPermission)
+			r.Get("/LoadPermission", controller.LoadPermission)
 
+			r.Route("/Redis", func(r chi.Router) {
+				r.Get("/", controller.Read)          // POST /parking
+				r.Post("/add", controller.Create)    // POST /parking/add
+				r.Post("/edit", controller.Update)   // POST /parking/update
+				r.Post("/delete", controller.Delete) // POST /parking/delete
+			})
 			r.Route("/package", func(r chi.Router) {
 				r.Get("/", controller.Package)           // POST /parking
 				r.Post("/add", controller.AddPackage)    // POST /parking/add

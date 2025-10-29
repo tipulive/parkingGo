@@ -8,7 +8,7 @@ import (
 
 func ProtectedHandler(w http.ResponseWriter, r *http.Request) {
 
-	authData := r.Context().Value("User").(*auth.Claims)
+	authData := r.Context().Value(auth.UserClaimsKey).(*auth.Claims)
 
 	/*resp := Claims{
 		User: model.User{

@@ -49,9 +49,9 @@ func Payment(w http.ResponseWriter, r *http.Request) {
 		packages[0].Price,
 		packages[0].PackValid,
 		packages[0].PackType,
-		"on",
-		"active",
-		"paid",
+		"off",
+		"member",
+		"membership",
 		UidToday.CreatedAt, // this is the `created_at` base for DATE_ADD
 		UidToday.CreatedAt, // this is the `updated_at`
 		packages[0].PackValid,

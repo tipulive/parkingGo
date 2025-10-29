@@ -8,7 +8,7 @@ import (
 )
 
 func AdminProtected(w http.ResponseWriter, r *http.Request) {
-	auth := r.Context().Value("admin").(*auth.AdminClaims)
+	auth := r.Context().Value(auth.AdminClaimsKey).(*auth.AdminClaims)
 
 	if auth.Admin.UID == "" {
 		http.Error(w, "Not an admin", http.StatusForbidden)

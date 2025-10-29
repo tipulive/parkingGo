@@ -8,7 +8,9 @@ import (
 
 func main() {
 	cfg := config.LoadConfig()
+
 	db.InitDB(cfg)
+	db.InitRedis()
 	route.ApiRoute()
 
 }

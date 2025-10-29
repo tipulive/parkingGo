@@ -1,7 +1,6 @@
 package auth
 
 import (
-	"context"
 	"encoding/json"
 	"net/http"
 
@@ -15,8 +14,6 @@ import (
 
 	"github.com/golang-jwt/jwt/v5"
 )
-
-var AdminJwtKey = []byte("Admin_secret_key")
 
 type AdminCredentials struct {
 	Username string `json:"username"`
@@ -93,7 +90,9 @@ func AdminAuthMiddleware(next http.Handler) http.Handler {
 		}
 
 		// Save claims in context
-		ctx := context.WithValue(r.Context(), "admin", adminCla)
+
+		ctx := ClaimSet(r.Context(), AdminClaimsKey, adminCla)
+
 		next.ServeHTTP(w, r.WithContext(ctx))
 	})
 }

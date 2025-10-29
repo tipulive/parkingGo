@@ -2,7 +2,7 @@
 @email=company@gmail.com
 @PhoneNumber=+250782389359
 @password=1
-@Auth_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbiI6eyJpZCI6MiwidWlkIjoia2ViaW5lZXJpY011bmFfMTY2ODkzNTUyNSIsImNhcmR1aWQiOiIiLCJ1aWRDcmVhdG9yIjoiIiwic3Vic2NyaWJlciI6IlRFQUxURCIsInBob3RvX3VybCI6IiIsIndlaWdodCI6MCwibmFtZSI6ImtlemEiLCJlbWFpbCI6ImNvbXBhbnlAZ21haWwuY29tIiwicGFzc3dvcmQiOiIiLCJDY29kZSI6IiIsInBob25lIjoiIiwiUGhvbmVOdW1iZXIiOiIrMjUwNzgyMzg5MzU5IiwicGxhdGZvcm0iOiIiLCJzdGF0dXMiOiIiLCJnZW5kZXIiOiIiLCJhZ2UiOiIiLCJpbml0Q291bnRyeSI6IiIsImNvdW50cnkiOiIiLCJtYXJpdGFsX3N0YXR1cyI6IiIsImNyZWF0ZWRfYXQiOiIyMDIyLTExLTIwVDAxOjEyOjA1LTA4OjAwIiwicGFja1VpZCI6IiIsInBhY2tUeXBlIjoiIiwic3RhdHVzVmFsaWQiOiIifSwiZXhwIjoxNzYwODExODEyfQ.j4tiq592qJFdyvR7Fszpst2voXYuU4gtzYvpe-MiCXw
+@Auth_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbiI6eyJpZCI6MiwidWlkIjoia2ViaW5lZXJpY011bmFfMTY2ODkzNTUyNSIsInBlcm1pc3Npb25Kc29uIjoie1wicGVybWlzc2lvbkNvbnRyb2xsZXJcIjogXCJwYWNrXCJ9IiwidWlkQ3JlYXRvciI6IktheWlyYW5nYV8xNjY4ODc2NTE5IiwiY29tcGFueU5hbWUiOiJURUEgTFREIiwicGhvdG9VcmwiOiJub25lIiwibmFtZSI6ImtlemEiLCJlbWFpbCI6ImNvbXBhbnlAZ21haWwuY29tIiwicGFzc3dvcmQiOiIkMnkkMTAkRURraFVjUDFnb3o4NmVUMGVUR1F4ZVM2M2RzNkovd2k2VmpoTkIvVzJ1VFVyRjJCUW53bWUiLCJjY29kZSI6Im5vbmUiLCJwaG9uZSI6IjA3ODIzODkzNTkiLCJwaG9uZU51bWJlciI6IisyNTA3ODIzODkzNTkiLCJpbml0Q291bnRyeSI6Im5vbmUiLCJwbGF0Zm9ybSI6IjMwMDAiLCJzdGF0dXMiOiJhY3RpdmUxIiwic3Vic2NyaWJlciI6IlRFQUxURCIsImNvdW50cnkiOiJVU0EiLCJjcmVhdGVkQXQiOiIyMDIyLTExLTIwVDAxOjEyOjA1LTA4OjAwIiwidXBkYXRlZEF0IjoiMjAyMy0wNi0xOVQxMDoyNToxNi0wNzowMCJ9LCJleHAiOjE3NjE3NzI3MTd9.tPsDKJw1kdPqhORzSUEwoIdNWH6VjMbxhmZIlrsvWzA
 POST  {{baseUrl}}/AdminLogin
 content-type: application/json;charset=UTF-8
 Authorization: Bearer {{Auth_token}}
@@ -22,6 +22,56 @@ Authorization: Bearer {{Auth_token}}
 "password":"1234"
 
 }
+### Redis
+GET {{baseUrl}}/Redis/
+content-type: application/json;charset=UTF-8
+Authorization: Bearer {{Auth_token}} 
+
+{
+  "email": "admin"
+}
+### Redis Add
+POST  {{baseUrl}}/Redis/add
+content-type: application/json;charset=UTF-8
+Authorization: Bearer {{Auth_token}} 
+
+{
+  "email": "admin"
+}
+### Redis Update
+POST  {{baseUrl}}/Redis/edit
+content-type: application/json;charset=UTF-8
+Authorization: Bearer {{Auth_token}} 
+
+{
+  "email": "admin"
+}
+### Redis Delete
+POST  {{baseUrl}}/Redis/delete
+content-type: application/json;charset=UTF-8
+Authorization: Bearer {{Auth_token}} 
+
+{
+  "email": "admin"
+}
+### Add Permission
+GET {{baseUrl}}/Permission
+content-type: application/json;charset=UTF-8
+Authorization: Bearer {{Auth_token}} 
+
+{
+  "email": "pack"
+}
+
+### Get Packages
+GET {{baseUrl}}/package/
+content-type: application/json;charset=UTF-8
+Authorization: Bearer {{Auth_token}} 
+
+{
+  "role": "admin"
+}
+
 ###create Package
 POST {{baseUrl}}/package/add
 content-type: application/json;charset=UTF-8
@@ -41,6 +91,23 @@ Authorization: Bearer {{Auth_token}}
 
 
 }
+### Get Permission
+GET {{baseUrl}}/LoadPermission
+content-type: application/json;charset=UTF-8
+Authorization: Bearer {{Auth_token}} 
+
+{
+  "email": "admin"
+}
+### Add Permission
+GET {{baseUrl}}/Permission
+content-type: application/json;charset=UTF-8
+Authorization: Bearer {{Auth_token}} 
+
+{
+  "email": "pack"
+}
+
 ### parking
 GET {{baseUrl}}/payment/
 content-type: application/json;charset=UTF-8

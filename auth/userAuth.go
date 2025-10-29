@@ -12,8 +12,6 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 )
 
-var jwtKey = []byte("my_secret_key")
-
 type Credentials struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
@@ -79,7 +77,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	tokenStr, err := token.SignedString(jwtKey)
+	tokenStr, err := token.SignedString(UserjwtKey)
 	if err != nil {
 		http.Error(w, "Could not create token", http.StatusInternalServerError)
 		return
@@ -121,7 +119,7 @@ func AuthMiddleware(next http.Handler) http.Handler {
 		claims := &Claims{}
 
 		token, err := jwt.ParseWithClaims(tokenStr, claims, func(token *jwt.Token) (interface{}, error) {
-			return jwtKey, nil
+			return UserjwtKey, nil
 		})
 
 		if err != nil || !token.Valid {
