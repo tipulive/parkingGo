@@ -34,6 +34,8 @@ type UserData struct {
 	Tel      string `json:"Tel"`
 }
 
+var UserClaim *Claims
+
 // Fake user check
 func AuthenticateUser(username, password string) bool {
 
@@ -61,7 +63,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 
 	expirationTime := time.Now().Add(5 * time.Minute) //minute to be expired
 
-	claims := &Claims{
+	UserClaim = &Claims{
 		/*User: model.User{
 			ID:          result[0].ID,
 			PhoneNumber: result[0].PhoneNumber,
@@ -75,9 +77,10 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 			ExpiresAt: jwt.NewNumericDate(expirationTime),
 		},
 	}
-
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	tokenStr, err := token.SignedString(UserjwtKey)
+	UserClaim.User.Password = "no Password"
+	//token := jwt.NewWithClaims(jwt.SigningMethodHS256, UserClaim)
+	//tokenStr, err := token.SignedString(UserjwtKey)
+	tokenStr, err := TokenSigned(UserjwtKey, UserClaim)
 	if err != nil {
 		http.Error(w, "Could not create token", http.StatusInternalServerError)
 		return
@@ -116,9 +119,9 @@ func AuthMiddleware(next http.Handler) http.Handler {
 		// Remove "Bearer " prefix
 		tokenStr := strings.TrimPrefix(authHeader, "Bearer ")
 
-		claims := &Claims{}
+		UserClaim = &Claims{}
 
-		token, err := jwt.ParseWithClaims(tokenStr, claims, func(token *jwt.Token) (interface{}, error) {
+		token, err := jwt.ParseWithClaims(tokenStr, UserClaim, func(token *jwt.Token) (interface{}, error) {
 			return UserjwtKey, nil
 		})
 

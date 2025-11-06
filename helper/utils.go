@@ -2,6 +2,7 @@ package helper
 
 import (
 	"crypto/rand"
+	"encoding/json"
 	"fmt"
 	"os"
 	"regexp"
@@ -123,4 +124,13 @@ func GetFileName() string {
 	mu.Unlock()
 
 	return name
+}
+func ConvertStringToJson(input string) map[string]string {
+	var result map[string]string
+	_ = json.Unmarshal([]byte(input), &result)
+	return result
+}
+func ConvertJsonToString(input map[string]string) string {
+	jsonData, _ := json.Marshal(input)
+	return string(jsonData)
 }

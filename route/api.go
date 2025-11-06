@@ -154,35 +154,41 @@ func ApiRoute() {
 
 	r.Route(fmt.Sprintf("/api/%s", apiVer), func(r chi.Router) {
 		// Public routes
-
+		r.Use(auth.AppVersionMiddleware)
 		r.Post("/AdminLogin", auth.AdminLoginHandler)
 		r.Post("/login", auth.LoginHandler)
+		r.Post("/upload", controller.UploadFileHandler)
+		r.Post("/QrCode", controller.Qrcode)
 
 		// Protected routes (using Admin middleware)
 		r.Group(func(r chi.Router) {
-			r.Use(auth.AdminAuthMiddleware)
+			r.Use(auth.AdminAuthMiddleware) // your authentication middleware
+			// Protect specific routes with permission middleware
+			// Apply permission middleware only for this route:
+			r.With(auth.PermissionMiddleware("mtest")).Get("/LoadPermission", controller.LoadPermission)
 
-			r.Post("/AdminProtected", controller.AdminProtected)
 			r.Get("/Permission", controller.AddPermission)
-			r.Get("/LoadPermission", controller.LoadPermission)
+
+			//r.Get("/LoadPermission", controller.LoadPermission)
 
 			r.Route("/Redis", func(r chi.Router) {
-				r.Get("/", controller.Read)          // POST /parking
+				r.With(auth.PermissionMiddleware("mtest")).Get("/", controller.Read)
+				r.Post("/incr", controller.Inc)      // POST /parking
 				r.Post("/add", controller.Create)    // POST /parking/add
 				r.Post("/edit", controller.Update)   // POST /parking/update
 				r.Post("/delete", controller.Delete) // POST /parking/delete
 			})
 			r.Route("/package", func(r chi.Router) {
-				r.Get("/", controller.Package)           // POST /parking
-				r.Post("/add", controller.AddPackage)    // POST /parking/add
-				r.Post("/edit", controller.EditPackage)  // POST /parking/update
-				r.Post("/delete", controller.DelPackage) // POST /parking/delete
+				r.With(auth.PermissionMiddleware("viewPackage")).Get("/", controller.Package)          // POST /parking
+				r.With(auth.PermissionMiddleware("addPackage")).Post("/add", controller.AddPackage)    // POST /parking/add
+				r.With(auth.PermissionMiddleware("editPackage")).Post("/edit", controller.EditPackage) // POST /parking/update
+				r.With(auth.PermissionMiddleware("delPackage")).Post("/delete", controller.DelPackage) // POST /parking/delete
 			})
 			r.Route("/payment", func(r chi.Router) {
-				r.Get("/", controller.Payment)                // POST /parking
-				r.Post("/cash", controller.AddPackage)        // POST /parking/add
-				r.Post("/membership", controller.EditPackage) // POST /parking/update
-				r.Post("/delete", controller.DelPackage)      // POST /parking/delete
+				r.With(auth.PermissionMiddleware("viewSales")).Get("/", controller.Payment)                    // POST /parking
+				r.With(auth.PermissionMiddleware("cashPayment")).Post("/cash", controller.AddPackage)          // POST /parking/add
+				r.With(auth.PermissionMiddleware("memberPayment")).Post("/membership", controller.EditPackage) // POST /parking/update
+				r.With(auth.PermissionMiddleware("delSales")).Post("/delete", controller.DelPackage)           // POST /parking/delete
 			})
 
 			r.Route("/parking", func(r chi.Router) {

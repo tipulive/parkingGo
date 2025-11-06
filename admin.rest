@@ -1,21 +1,55 @@
 @baseUrl = http://localhost:8080/api/v1
+@App_Vers=1.0.0.1
 @email=company@gmail.com
 @PhoneNumber=+250782389359
 @password=1
-@Auth_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbiI6eyJpZCI6MiwidWlkIjoia2ViaW5lZXJpY011bmFfMTY2ODkzNTUyNSIsInBlcm1pc3Npb25Kc29uIjoie1wicGVybWlzc2lvbkNvbnRyb2xsZXJcIjogXCJwYWNrXCJ9IiwidWlkQ3JlYXRvciI6IktheWlyYW5nYV8xNjY4ODc2NTE5IiwiY29tcGFueU5hbWUiOiJURUEgTFREIiwicGhvdG9VcmwiOiJub25lIiwibmFtZSI6ImtlemEiLCJlbWFpbCI6ImNvbXBhbnlAZ21haWwuY29tIiwicGFzc3dvcmQiOiIkMnkkMTAkRURraFVjUDFnb3o4NmVUMGVUR1F4ZVM2M2RzNkovd2k2VmpoTkIvVzJ1VFVyRjJCUW53bWUiLCJjY29kZSI6Im5vbmUiLCJwaG9uZSI6IjA3ODIzODkzNTkiLCJwaG9uZU51bWJlciI6IisyNTA3ODIzODkzNTkiLCJpbml0Q291bnRyeSI6Im5vbmUiLCJwbGF0Zm9ybSI6IjMwMDAiLCJzdGF0dXMiOiJhY3RpdmUxIiwic3Vic2NyaWJlciI6IlRFQUxURCIsImNvdW50cnkiOiJVU0EiLCJjcmVhdGVkQXQiOiIyMDIyLTExLTIwVDAxOjEyOjA1LTA4OjAwIiwidXBkYXRlZEF0IjoiMjAyMy0wNi0xOVQxMDoyNToxNi0wNzowMCJ9LCJleHAiOjE3NjE3NzI3MTd9.tPsDKJw1kdPqhORzSUEwoIdNWH6VjMbxhmZIlrsvWzA
+@Auth_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbiI6eyJpZCI6MiwidWlkIjoia2ViaW5lZXJpY011bmFfMTY2ODkzNTUyNSIsInBlcm1pc3Npb25WYWx1ZSI6IiIsInBlcm1pc3Npb25Kc29uIjoie1wicGVybWlzc2lvbkNvbnRyb2xsZXJcIjogXCJ2ZWZ1XCIsIFwidGVzdFwiOiBcInRydWVcIiwgXCJhcHBcIjogXCJ6ZXplXCJ9IiwidWlkQ3JlYXRvciI6IktheWlyYW5nYV8xNjY4ODc2NTE5IiwiY29tcGFueU5hbWUiOiJURUEgTFREIiwicGhvdG9VcmwiOiJub25lIiwibmFtZSI6ImtlemEiLCJlbWFpbCI6ImNvbXBhbnlAZ21haWwuY29tIiwicGFzc3dvcmQiOiJubyBQYXNzd29yZCIsImNjb2RlIjoibm9uZSIsInBob25lIjoiMDc4MjM4OTM1OSIsInBob25lTnVtYmVyIjoiKzI1MDc4MjM4OTM1OSIsImluaXRDb3VudHJ5Ijoibm9uZSIsInBsYXRmb3JtIjoiMzAwMCIsInN0YXR1cyI6ImFjdGl2ZTEiLCJzdWJzY3JpYmVyIjoiVEVBTFREIiwiY291bnRyeSI6IlVTQSIsImNyZWF0ZWRBdCI6IjIwMjItMTEtMjBUMDE6MTI6MDUtMDg6MDAiLCJ1cGRhdGVkQXQiOiIyMDIzLTA2LTE5VDEwOjI1OjE2LTA3OjAwIn0sImV4cCI6MTc2MjM3OTQ2Nn0.HiplclH24al5SbXYmPRZ87-nd7o1KHCgzON1NjmFeBU
 POST  {{baseUrl}}/AdminLogin
 content-type: application/json;charset=UTF-8
 Authorization: Bearer {{Auth_token}}
+App-Version: {{App_Vers}}
 
 {
 "username":"test",
 "password":"keza"
 }
 
+### Generate QR code
+POST  {{baseUrl}}/QrCode
+content-type: application/json;charset=UTF-8
+Authorization: Bearer {{Auth_token}}
+App-Version: {{App_Vers}}
+
+{
+  "data": "https://example.com/user/12345",
+  "size": 256,
+  "level": "M"
+}
+### Upload single image
+POST {{baseUrl}}/upload
+App-Version: {{App_Vers}}
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="file"; filename="eric3.jpg"
+Content-Type: image/jpeg
+
+< eric.jpg
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="userId"
+
+12345
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="description"
+
+User profile picture
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
 ### Try to access Proteted middleware
 POST  {{baseUrl}}/AdminProtected
 content-type: application/json;charset=UTF-8
 Authorization: Bearer {{Auth_token}}
+App-Version: {{App_Vers}}
 
 {
 "username":"admin",
@@ -26,6 +60,16 @@ Authorization: Bearer {{Auth_token}}
 GET {{baseUrl}}/Redis/
 content-type: application/json;charset=UTF-8
 Authorization: Bearer {{Auth_token}} 
+App-Version: {{App_Vers}}
+
+{
+  "email": "admin"
+}
+### Redis increment test realtime
+POST  {{baseUrl}}/Redis/incr
+content-type: application/json;charset=UTF-8
+Authorization: Bearer {{Auth_token}} 
+App-Version: {{App_Vers}}
 
 {
   "email": "admin"
@@ -34,6 +78,7 @@ Authorization: Bearer {{Auth_token}}
 POST  {{baseUrl}}/Redis/add
 content-type: application/json;charset=UTF-8
 Authorization: Bearer {{Auth_token}} 
+App-Version: {{App_Vers}}
 
 {
   "email": "admin"
@@ -42,7 +87,7 @@ Authorization: Bearer {{Auth_token}}
 POST  {{baseUrl}}/Redis/edit
 content-type: application/json;charset=UTF-8
 Authorization: Bearer {{Auth_token}} 
-
+App-Version: {{App_Vers}}
 {
   "email": "admin"
 }
@@ -50,24 +95,33 @@ Authorization: Bearer {{Auth_token}}
 POST  {{baseUrl}}/Redis/delete
 content-type: application/json;charset=UTF-8
 Authorization: Bearer {{Auth_token}} 
-
+App-Version: {{App_Vers}}
 {
   "email": "admin"
 }
 ### Add Permission
+GET {{baseUrl}}/LoadPermission
+content-type: application/json;charset=UTF-8
+Authorization: Bearer {{Auth_token}} 
+App-Version: {{App_Vers}}
+{
+  "email": "pack"
+}
+
+### Add Permission
 GET {{baseUrl}}/Permission
 content-type: application/json;charset=UTF-8
 Authorization: Bearer {{Auth_token}} 
-
+App-Version: {{App_Vers}}
 {
-  "email": "pack"
+  "email": "zeze"
 }
 
 ### Get Packages
 GET {{baseUrl}}/package/
 content-type: application/json;charset=UTF-8
 Authorization: Bearer {{Auth_token}} 
-
+App-Version: {{App_Vers}}
 {
   "role": "admin"
 }
@@ -76,7 +130,7 @@ Authorization: Bearer {{Auth_token}}
 POST {{baseUrl}}/package/add
 content-type: application/json;charset=UTF-8
 Authorization: Bearer {{Auth_token}}
-
+App-Version: {{App_Vers}}
 {
  "name": "kevine",
   "packValid": "30",
@@ -95,7 +149,7 @@ Authorization: Bearer {{Auth_token}}
 GET {{baseUrl}}/LoadPermission
 content-type: application/json;charset=UTF-8
 Authorization: Bearer {{Auth_token}} 
-
+App-Version: {{App_Vers}}
 {
   "email": "admin"
 }
@@ -103,16 +157,16 @@ Authorization: Bearer {{Auth_token}}
 GET {{baseUrl}}/Permission
 content-type: application/json;charset=UTF-8
 Authorization: Bearer {{Auth_token}} 
-
+App-Version: {{App_Vers}}
 {
-  "email": "pack"
+  "email": "kaka"
 }
 
 ### parking
 GET {{baseUrl}}/payment/
 content-type: application/json;charset=UTF-8
 Authorization: Bearer {{Auth_token}}
-
+App-Version: {{App_Vers}}
 {
   "uid": "sub_001",
   "uid_user": "user_001",

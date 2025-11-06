@@ -12,6 +12,7 @@ func CreateRedis() {
 	if err != nil {
 		log.Fatal(err)
 	}
+
 }
 func ReadRedis() {
 	// Get value

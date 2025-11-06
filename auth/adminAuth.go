@@ -22,12 +22,15 @@ type AdminCredentials struct {
 
 type AdminClaims struct {
 	Admin model.Admin `json:"admin"`
+	Token string      `json:"token,omitempty"`
 	jwt.RegisteredClaims
 }
 type AdminUserData struct {
 	Username string `json:"username"`
 	Tel      string `json:"Tel"`
 }
+
+var claims *AdminClaims
 
 // Fake user check
 var response = helper.GetResponse
@@ -47,23 +50,30 @@ func AdminLoginHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	//500 means 500 minutes
 	expirationTime := time.Now().Add(500 * time.Minute) //minute to be expired
-
-	claims := &AdminClaims{
+	claims = &AdminClaims{
 
 		Admin: result[0],
+
 		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(expirationTime),
 		},
 	}
+	claims.Admin.Password = "no Password"
+	/*token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	tokenStr, err := token.SignedString(AdminJwtKey)**/
+	tokenStr, err := TokenSigned(AdminJwtKey, claims)
 
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	tokenStr, err := token.SignedString(AdminJwtKey)
+	claims.Token = tokenStr
 	if err != nil {
 		http.Error(w, "Could not create token", http.StatusInternalServerError)
 		return
 	}
-
-	json.NewEncoder(w).Encode(map[string]string{"token": tokenStr})
+	Tokens := map[string]string{
+		"Token": tokenStr,
+	}
+	json.NewEncoder(w).Encode(response(true, Tokens))
+	//fmt.Println("Generated Token:", tokenStr)
+	//json.NewEncoder(w).Encode(map[string]string{"token": tokenStr})
 }
 
 // AdminAuthMiddleware for Chi
@@ -76,9 +86,9 @@ func AdminAuthMiddleware(next http.Handler) http.Handler {
 		}
 
 		tokenStr := strings.TrimPrefix(authHeader, "Bearer ")
-		adminCla := &AdminClaims{}
+		//claims = &AdminClaims{}
 
-		token, err := jwt.ParseWithClaims(tokenStr, adminCla, func(token *jwt.Token) (interface{}, error) {
+		token, err := jwt.ParseWithClaims(tokenStr, claims, func(token *jwt.Token) (interface{}, error) {
 			return AdminJwtKey, nil
 		})
 
@@ -91,7 +101,7 @@ func AdminAuthMiddleware(next http.Handler) http.Handler {
 
 		// Save claims in context
 
-		ctx := ClaimSet(r.Context(), AdminClaimsKey, adminCla)
+		ctx := ClaimSet(r.Context(), AdminClaimsKey, claims)
 
 		next.ServeHTTP(w, r.WithContext(ctx))
 	})

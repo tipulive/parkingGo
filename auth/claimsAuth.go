@@ -1,6 +1,10 @@
 package auth
 
-import "context"
+import (
+	"context"
+
+	"github.com/golang-jwt/jwt/v5"
+)
 
 // ctxKey is a private type to avoid collisions
 type ctxKey string
@@ -13,6 +17,13 @@ var (
 )
 
 // 1️⃣ create base context
+
+func TokenSigned(key, Claims interface{}) (string, error) {
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	tokenStr, err := token.SignedString(key)
+
+	return tokenStr, err
+}
 
 // NewKey creates a new unique key
 func ClaimNewKey(name string) ctxKey {

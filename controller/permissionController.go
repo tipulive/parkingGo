@@ -31,14 +31,15 @@ func LoadPermission(w http.ResponseWriter, r *http.Request) {
 		return
 
 	}*/
-	jsonStr := AuthAdmin(r).Admin.PermissionJSON
-	var result map[string]string
-	err := json.Unmarshal([]byte(jsonStr), &result)
-	if err != nil {
-		json.NewEncoder(w).Encode(response(true, err.Error()))
+	/*perm := helper.ConvertStringToJson(AuthAdmin(r).Admin.PermissionJSON)
+	if perm["test"] != "true" { //true means show,empty or false means hide
+		json.NewEncoder(w).Encode(response(false, "you Do not have a permission to Access This Option Please Contact System Admin"))
 		return
-	}
-	json.NewEncoder(w).Encode(response(true, result[helper.GetFileName()]))
+	}*/
+	perm := helper.ConvertStringToJson(AuthAdmin(r).Admin.PermissionJSON)
+	json.NewEncoder(w).Encode(response(true, perm["test"]))
+	//
+	//json.NewEncoder(w).Encode(response(true, AuthAdmin(r)))
 
 	//fmt.Println(authData.Admin.PermissionJSON)
 }
@@ -56,23 +57,23 @@ func AddPermission(w http.ResponseWriter, r *http.Request) {
 	`
 
 	// 5️⃣ Save it back
-	_, err := db.DB.Exec(query, helper.GetFileName(), adminData.Email, 2) //Add Permission
+	//_, err := db.DB.Exec(query, helper.GetFileName(), adminData.Email, 2) //Add Permission
+	permissionkey := "app"
+	_, err := db.DB.Exec(query, permissionkey, adminData.Email, 2) //Add Permission
 	if err != nil {
 		log.Fatal(err)
 	}
-	ctx := auth.ClaimUpdate(r.Context(), auth.AdminClaimsKey, func(c *auth.AdminClaims) {
-		c.Admin.PermissionJSON = adminData.Email
-	})
-	r = r.WithContext(ctx)
-	// no next handler available in this HTTP handler; continue processing without calling next
-	/*ctx := context.WithValue(r.Context(), "admin", adminCla)
-	next.ServeHTTP(w, r.WithContext(ctx))*/
-	// 1️⃣ create base context
+	Claims := AuthAdmin(r)
 
-	json.NewEncoder(w).Encode(map[string]any{
-		"admin": AuthAdmin(r),
-		"user":  adminData.Email,
-	})
+	permMap := helper.ConvertStringToJson(AuthAdmin(r).Admin.PermissionJSON)
+	permMap[permissionkey] = adminData.Email
+	Claims.Admin.PermissionJSON = helper.ConvertJsonToString(permMap)
+	//
+	//Claims.Admin.PermissionJSON = "hello"
+	tokeString, _ := auth.TokenSigned(auth.AdminJwtKey, Claims)
+
+	json.NewEncoder(w).Encode(response(true, tokeString))
+
 }
 func EditPermission_Admin() {
 

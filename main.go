@@ -10,7 +10,9 @@ func main() {
 	cfg := config.LoadConfig()
 
 	db.InitDB(cfg)
+
 	db.InitRedis()
+	db.StartPubSubListener(db.CTXRedis)
 	route.ApiRoute()
 
 }

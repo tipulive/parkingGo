@@ -16,6 +16,8 @@ var Subscription []model.Subscription //table
 var adminData model.Admin
 var userData model.User
 
+//var claims *auth.AdminClaims
+
 var response = helper.GetResponse
 
 var validateData = validator.New()
@@ -27,7 +29,7 @@ type RequestContext struct {
 }
 
 func AuthAdmin(r *http.Request) *auth.AdminClaims {
-	r.Context().Value(auth.AdminClaimsKey).(*auth.AdminClaims).Admin.Password = "no password"
+	//r.Context().Value(auth.AdminClaimsKey).(*auth.AdminClaims).Admin.Password = "no password"
 
 	return r.Context().Value(auth.AdminClaimsKey).(*auth.AdminClaims)
 }

@@ -1,0 +1,41 @@
+@baseUrl = http://localhost:8080/api/v1
+@email=company@gmail.com
+@PhoneNumber=+250782389359
+@password=1
+@Auth_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbiI6eyJpZCI6MywidWlkIjoia2ViaW5lZXJpY011bmFfMTY4MTQ3MTEzMCIsInBlcm1pc3Npb25Kc29uIjoie30iLCJ1aWRDcmVhdG9yIjoiS2F5aXJhbmdhXzE2Njg4NzY1MTkiLCJjb21wYW55TmFtZSI6IlRWQSIsInBob3RvVXJsIjoibm9uZSIsIm5hbWUiOiJjb21wYW55IiwiZW1haWwiOiJjb21wYW55MUBnbWFpbC5jb20iLCJwYXNzd29yZCI6Im5vIFBhc3N3b3JkIiwiY2NvZGUiOiJub25lIiwicGhvbmUiOiJub25lIiwicGhvbmVOdW1iZXIiOiIwNzgyMzg5MzU5IiwiaW5pdENvdW50cnkiOiJub25lIiwicGxhdGZvcm0iOiIzMDAwIiwic3RhdHVzIjoibm9uZSIsInN1YnNjcmliZXIiOiJUVkEiLCJjb3VudHJ5IjoiVVNBIiwiY3JlYXRlZEF0IjoiMjAyMy0wNC0xNFQwNDoxODo1MC0wNzowMCJ9LCJleHAiOjE3NjE5NTUxMjJ9.En2pFT-uzVaQhEL_SIXFBeYy_R4i0OwjpXje3wQcNqE
+POST  {{baseUrl}}/AdminLogin
+content-type: application/json;charset=UTF-8
+Authorization: Bearer {{Auth_token}}
+
+{
+"username":"company13",
+"password":"company"
+}
+
+### Try to access Proteted middleware
+POST  {{baseUrl}}/AdminProtected
+content-type: application/json;charset=UTF-8
+Authorization: Bearer {{Auth_token}}
+
+{
+"username":"admin",
+"password":"1234"
+
+}
+### Redis
+GET {{baseUrl}}/Redis/
+content-type: application/json;charset=UTF-8
+Authorization: Bearer {{Auth_token}} 
+
+{
+  "email": "admin"
+}
+### Redis increment test realtime
+POST  {{baseUrl}}/Redis/incr
+content-type: application/json;charset=UTF-8
+Authorization: Bearer {{Auth_token}} 
+
+{
+  "email": "admin"
+}
+###
