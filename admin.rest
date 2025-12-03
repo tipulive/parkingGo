@@ -3,7 +3,7 @@
 @email=company@gmail.com
 @PhoneNumber=+250782389359
 @password=1
-@Auth_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbiI6eyJpZCI6MiwidWlkIjoia2ViaW5lZXJpY011bmFfMTY2ODkzNTUyNSIsInBlcm1pc3Npb25WYWx1ZSI6IiIsInBlcm1pc3Npb25Kc29uIjoie1wicGVybWlzc2lvbkNvbnRyb2xsZXJcIjogXCJ2ZWZ1XCIsIFwidGVzdFwiOiBcInRydWVcIiwgXCJhcHBcIjogXCJ6ZXplXCJ9IiwidWlkQ3JlYXRvciI6IktheWlyYW5nYV8xNjY4ODc2NTE5IiwiY29tcGFueU5hbWUiOiJURUEgTFREIiwicGhvdG9VcmwiOiJub25lIiwibmFtZSI6ImtlemEiLCJlbWFpbCI6ImNvbXBhbnlAZ21haWwuY29tIiwicGFzc3dvcmQiOiJubyBQYXNzd29yZCIsImNjb2RlIjoibm9uZSIsInBob25lIjoiMDc4MjM4OTM1OSIsInBob25lTnVtYmVyIjoiKzI1MDc4MjM4OTM1OSIsImluaXRDb3VudHJ5Ijoibm9uZSIsInBsYXRmb3JtIjoiMzAwMCIsInN0YXR1cyI6ImFjdGl2ZTEiLCJzdWJzY3JpYmVyIjoiVEVBTFREIiwiY291bnRyeSI6IlVTQSIsImNyZWF0ZWRBdCI6IjIwMjItMTEtMjBUMDE6MTI6MDUtMDg6MDAiLCJ1cGRhdGVkQXQiOiIyMDIzLTA2LTE5VDEwOjI1OjE2LTA3OjAwIn0sImV4cCI6MTc2MjM3OTQ2Nn0.HiplclH24al5SbXYmPRZ87-nd7o1KHCgzON1NjmFeBU
+@Auth_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbiI6eyJpZCI6MiwidWlkIjoia2ViaW5lZXJpY011bmFfMTY2ODkzNTUyNSIsInBlcm1pc3Npb25WYWx1ZSI6IiIsInBlcm1pc3Npb25Kc29uIjoie1wicGVybWlzc2lvbkNvbnRyb2xsZXJcIjogXCJ2ZWZ1XCIsIFwidGVzdFwiOiBcInRydWVcIiwgXCJhcHBcIjogXCJ6ZXplXCJ9IiwidWlkQ3JlYXRvciI6IktheWlyYW5nYV8xNjY4ODc2NTE5IiwiY29tcGFueU5hbWUiOiJURUEgTFREIiwicGhvdG9VcmwiOiJub25lIiwibmFtZSI6ImtlemEiLCJlbWFpbCI6ImNvbXBhbnlAZ21haWwuY29tIiwicGFzc3dvcmQiOiJubyBQYXNzd29yZCIsImNjb2RlIjoibm9uZSIsInBob25lIjoiMDc4MjM4OTM1OSIsInBob25lTnVtYmVyIjoiKzI1MDc4MjM4OTM1OSIsImluaXRDb3VudHJ5Ijoibm9uZSIsInBsYXRmb3JtIjoiMzAwMCIsInN0YXR1cyI6ImFjdGl2ZTEiLCJzdWJzY3JpYmVyIjoiVEVBTFREIiwiY291bnRyeSI6IlVTQSIsImNyZWF0ZWRBdCI6IjIwMjItMTEtMjBUMDE6MTI6MDUtMDg6MDAiLCJ1cGRhdGVkQXQiOiIyMDIzLTA2LTE5VDEwOjI1OjE2LTA3OjAwIn0sImV4cCI6MTc2MjkwNjA3OX0.scDCjk-5LzsQrx7Tn5lqUrrHR6c2rLj9OVJ63LUJYoI
 POST  {{baseUrl}}/AdminLogin
 content-type: application/json;charset=UTF-8
 Authorization: Bearer {{Auth_token}}
@@ -13,7 +13,43 @@ App-Version: {{App_Vers}}
 "username":"test",
 "password":"keza"
 }
+### View Sales
+GET  {{baseUrl}}/checkPayment
+content-type: application/json;charset=UTF-8
+Authorization: Bearer {{Auth_token}}
+App-Version: {{App_Vers}} 
 
+{
+  "pack_name": "day basic",
+  "id":1,
+  "input_action":"today"
+ 
+}
+### View Sales
+POST  {{baseUrl}}/ViewSales
+content-type: application/json;charset=UTF-8
+Authorization: Bearer {{Auth_token}}
+App-Version: {{App_Vers}} 
+
+{
+  "pack_name": "day basic",
+  "id":1,
+  "input_action":"today"
+ 
+}
+
+
+### Send Email
+POST  {{baseUrl}}/sendEmail
+content-type: application/json;charset=UTF-8
+Authorization: Bearer {{Auth_token}}
+App-Version: {{App_Vers}}
+
+{
+  "data": "https://example.com/user/12345",
+  "size": 256,
+  "level": "M"
+}
 ### Generate QR code
 POST  {{baseUrl}}/QrCode
 content-type: application/json;charset=UTF-8

@@ -1,0 +1,6 @@
+use:unhanced to prevent loading on submit 
+let {form}=props to get all formData
+
+form action ="?/create"
+
+https://www.youtube.com/@HunterScript

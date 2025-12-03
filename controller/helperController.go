@@ -15,6 +15,8 @@ var paymentData model.Subscription    //form
 var Subscription []model.Subscription //table
 var adminData model.Admin
 var userData model.User
+var productData model.ProductData
+var products []model.ProductData
 
 //var claims *auth.AdminClaims
 

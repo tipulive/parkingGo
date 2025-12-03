@@ -1,0 +1,81 @@
+@baseUrl = http://localhost:8080/api/v1
+@App_Vers=1.0.0.1
+@email=company@gmail.com
+@PhoneNumber=+250782389359
+@password=1
+@Auth_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbiI6eyJpZCI6MiwidWlkIjoia2ViaW5lZXJpY011bmFfMTY2ODkzNTUyNSIsInBlcm1pc3Npb25WYWx1ZSI6IiIsInBlcm1pc3Npb25Kc29uIjoie1wicGVybWlzc2lvbkNvbnRyb2xsZXJcIjogXCJ2ZWZ1XCIsIFwidGVzdFwiOiBcInRydWVcIiwgXCJhcHBcIjogXCJ6ZXplXCJ9IiwidWlkQ3JlYXRvciI6IktheWlyYW5nYV8xNjY4ODc2NTE5IiwiY29tcGFueU5hbWUiOiJURUEgTFREIiwicGhvdG9VcmwiOiJub25lIiwibmFtZSI6ImtlemEiLCJlbWFpbCI6ImNvbXBhbnlAZ21haWwuY29tIiwicGFzc3dvcmQiOiJubyBQYXNzd29yZCIsImNjb2RlIjoibm9uZSIsInBob25lIjoiMDc4MjM4OTM1OSIsInBob25lTnVtYmVyIjoiKzI1MDc4MjM4OTM1OSIsImluaXRDb3VudHJ5Ijoibm9uZSIsInBsYXRmb3JtIjoiMzAwMCIsInN0YXR1cyI6ImFjdGl2ZTEiLCJzdWJzY3JpYmVyIjoiVEVBTFREIiwiY291bnRyeSI6IlVTQSIsImNyZWF0ZWRBdCI6IjIwMjItMTEtMjBUMDE6MTI6MDUtMDg6MDAiLCJ1cGRhdGVkQXQiOiIyMDIzLTA2LTE5VDEwOjI1OjE2LTA3OjAwIn0sImV4cCI6MTc2MjkwNjA3OX0.scDCjk-5LzsQrx7Tn5lqUrrHR6c2rLj9OVJ63LUJYoI
+POST  {{baseUrl}}/AdminLogin
+content-type: application/json;charset=UTF-8
+Authorization: Bearer {{Auth_token}}
+App-Version: {{App_Vers}}
+
+{
+"username":"test",
+"password":"keza"
+}
+###CRUD
+###create
+POST  {{baseUrl}}/createProduct
+content-type: application/json;charset=UTF-8
+Authorization: Bearer {{Auth_token}}
+App-Version: {{App_Vers}} 
+
+{
+  "pack_name": "day basic",
+  "id":1,
+  "input_action":"today"
+ 
+}
+
+###update
+POST  {{baseUrl}}/updateProduct
+content-type: application/json;charset=UTF-8
+Authorization: Bearer {{Auth_token}}
+App-Version: {{App_Vers}} 
+
+{
+  "pack_name": "day basic",
+  "id":1,
+  "input_action":"today"
+ 
+}
+
+###delete
+POST  {{baseUrl}}/deleteProduct
+content-type: application/json;charset=UTF-8
+Authorization: Bearer {{Auth_token}}
+App-Version: {{App_Vers}} 
+
+{
+  "pack_name": "day basic",
+  "id":1,
+  "input_action":"today"
+ 
+}
+
+###Load
+GET  {{baseUrl}}/loadProduct
+content-type: application/json;charset=UTF-8
+Authorization: Bearer {{Auth_token}}
+App-Version: {{App_Vers}} 
+
+{
+  "product_code": "day basic",
+  "id":1,
+  "price":"today"
+ 
+}
+
+###Search
+GET  {{baseUrl}}/searchProduct
+content-type: application/json;charset=UTF-8
+Authorization: Bearer {{Auth_token}}
+App-Version: {{App_Vers}} 
+
+{
+  "pack_name": "day basic",
+  "id":1,
+  "input_action":"today"
+ 
+}
+###CRUD

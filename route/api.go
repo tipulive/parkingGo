@@ -157,9 +157,19 @@ func ApiRoute() {
 		r.Use(auth.AppVersionMiddleware)
 		r.Post("/AdminLogin", auth.AdminLoginHandler)
 		r.Post("/login", auth.LoginHandler)
+		r.Post("/ViewSales", controller.ViewSales)
 		r.Post("/upload", controller.UploadFileHandler)
 		r.Post("/QrCode", controller.Qrcode)
+		r.Post("/sendEmail", controller.SendEmail)
+		r.Get("/checkPayment", controller.CheckPayment)
 
+		//crud product//
+		r.Post("/createProduct", controller.CreateProduct)
+		r.Get("/searchProduct", controller.SearchProduct)
+		r.Get("/loadProduct", controller.LoadProduct)
+		r.Post("/updateProduct", controller.UpdateProduct)
+		r.Post("/deleteProduct", controller.DeleteProduct)
+		//crud product//
 		// Protected routes (using Admin middleware)
 		r.Group(func(r chi.Router) {
 			r.Use(auth.AdminAuthMiddleware) // your authentication middleware

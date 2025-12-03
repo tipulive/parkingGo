@@ -1,0 +1,13 @@
+# Create a new project
+npx degit sveltejs/template my-svelte-app
+
+cd my-svelte-app
+
+npm install
+
+# Start dev server
+npm run dev
+
+# Visit http://localhost:5000
+
+
